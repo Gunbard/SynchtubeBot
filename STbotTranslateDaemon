@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Translation daemon for Synchtube bot
+# Checks for translationRequest file every 2 seconds
+# If found, passes it to translateJPtoEN which will process it
+# Other script will output a result file and delete the input file
+
+checkForRequest()
+{
+    if [ -a "/etc/pyphantomjs/translation/translationRequest.txt" ]
+    then
+         request=`cat /etc/pyphantomjs/translation/translationRequest.txt`
+         rm /etc/pyphantomjs/translation/translationRequest.txt
+         xvfb-run --auto-servernum pyphantomjs /shared/translateJPtoEN.js $request > /dev/null/2> /dev/null
+    fi
+}
+
+loop=1
+while [ $loop -eq 1 ]
+do
+    checkForRequest
+    sleep 2
+done

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Daemon for dead video checker for Synchtube bot
+# Checks for playlist.txt that contains the innerHTML for the room's playlist every 2 seconds
+# *Thumbnail mode must be enabled when getting the innerHTML
+# Other script will output file with dead videos and delete input file
+
+checkForRequest()
+{
+    if [ -a "/etc/pyphantomjs/deadVideoCheck/playlist.txt" ]
+    then
+        echo -e "Dead video detection request received.\n"
+        ./detectDeadVideos.rb $FILE
+    fi
+}
+
+LOOP=1
+while [ $LOOP -eq 1 ]
+do
+    checkForRequest
+    sleep 2
+done
